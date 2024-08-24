@@ -77,12 +77,12 @@ void decimal_p_BCD(int num) {
         return;
     }
     while (num > 0) {
-        int digit = num % 10;
+        int digito = num % 10;
         int bcd[4] = {0, 0, 0, 0};
         int i = 3;
-        while (digit > 0) {
-            bcd[i] = digit % 2;
-            digit = digit / 2;
+        while (digito > 0) {
+            bcd[i] = digito % 2;
+            digito = digito / 2;
             i--;
         }
         for (int j = 0; j < 4; j++) {
@@ -94,6 +94,52 @@ void decimal_p_BCD(int num) {
     printf("\n");
 }
 
+void decimal_para_complemento2(int num) {
+    printf("Conversão de %d para complemento a 2 (16 bits):\n", num);
+    int bin[16];
+    int i = 0;
+
+    if (num >= 0) {
+        while (num > 0) {
+            bin[i] = num % 2;
+            num = num / 2;
+            i++;
+        }
+        while (i < 16) {
+            bin[i] = 0;
+            i++;
+        }
+    } else {
+        num = abs(num);
+        while (num > 0) {
+            bin[i] = num % 2;
+            num = num / 2;
+            i++;
+        }
+        while (i < 16) {
+            bin[i] = 0;
+            i++;
+        }
+        // Complemento a 1
+        for (int j = 0; j < 16; j++) {
+            bin[j] = !bin[j];
+        }
+        // Adiciona 1
+        int carry = 1;
+        for (int j = 0; j < 16; j++) {
+            int soma = bin[j] + carry;
+            bin[j] = soma % 2;
+            carry = soma / 2;
+        }
+    }
+
+    for (int j = 15; j >= 0; j--) {
+        printf("%d", bin[j]);
+    }
+    printf("\n");
+}
+
+
 int main() {
     int opcao, num;
 
@@ -103,34 +149,40 @@ int main() {
         printf("2 - Decimal para Octal\n");
         printf("3 - Decimal para Hexadecimal\n");
         printf("4 - Decimal para BCD\n");
-        printf("5 - Sair\n");
+        printf("5 - Decimal para Complemento a 2 (16 bits)\n");
+        printf("6 - Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                printf("Digite um número decimal: ");
+                printf("digite um número decimal: ");
                 scanf("%d", &num);
                 decimal_p_bin
             (num);
                 break;
             case 2:
-                printf("Digite um número decimal: ");
+                printf("digite um número decimal: ");
                 scanf("%d", &num);
                 decimal_p_octal
             (num);
                 break;
             case 3:
-                printf("Digite um número decimal: ");
+                printf("digite um número decimal: ");
                 scanf("%d", &num);
                 decimal_p_hexa(num);
                 break;
             case 4:
-                printf("Digite um número decimal: ");
+                printf("digite um número decimal: ");
                 scanf("%d", &num);
                 decimal_p_BCD(num);
                 break;
             case 5:
+                printf("digite um número decimal: ");
+                scanf("%d", &num);
+                decimal_para_complemento2(num);
+                break;
+            case 6:
                 printf("Saindo...\n");
                 break;
             default:
