@@ -120,11 +120,9 @@ void decimal_para_complemento2(int num) {
             bin[i] = 0;
             i++;
         }
-        // Complemento a 1
         for (int j = 0; j < 16; j++) {
             bin[j] = !bin[j];
         }
-        // Adiciona 1
         int carry = 1;
         for (int j = 0; j < 16; j++) {
             int soma = bin[j] + carry;
@@ -139,6 +137,41 @@ void decimal_para_complemento2(int num) {
     printf("\n");
 }
 
+void exibir_bits_float(float num) {
+    union {
+        float f;
+        unsigned int bits;
+    } float_converter;
+
+    float_converter.f = num;
+
+    printf("Bits do número em ponto flutuante (float):\n");
+    for (int i = 31; i >= 0; i--) {
+        printf("%d", (float_converter.bits >> i) & 1);
+        if (i == 31) printf(" (sinal) ");
+        if (i == 23) printf(" (expoente) ");
+        if (i == 0) printf(" (fração) ");
+    }
+    printf("\n");
+}
+
+void exibir_bits_double(double num) {
+    union {
+        double d;
+        unsigned long long bits;
+    } double_converter;
+
+    double_converter.d = num;
+
+    printf("Bits do número em ponto flutuante (double):\n");
+    for (int i = 63; i >= 0; i--) {
+        printf("%d", (double_converter.bits >> i) & 1);
+        if (i == 63) printf(" (sinal) ");
+        if (i == 52) printf(" (expoente) ");
+        if (i == 0) printf(" (fração) ");
+    }
+    printf("\n");
+}
 
 int main() {
     int opcao, num;
@@ -150,7 +183,9 @@ int main() {
         printf("3 - Decimal para Hexadecimal\n");
         printf("4 - Decimal para BCD\n");
         printf("5 - Decimal para Complemento a 2 (16 bits)\n");
-        printf("6 - Sair\n");
+        printf("6 - Exibir bits de número em float\n");
+        printf("7 - Exibir bits de número em double\n");
+        printf("8 - Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -183,13 +218,23 @@ int main() {
                 decimal_para_complemento2(num);
                 break;
             case 6:
+                printf("Digite um número real (float): ");
+                scanf("%lf", &num);
+                exibir_bits_float((float)num);
+                break;
+            case 7:
+                printf("Digite um número real (double): ");
+                scanf("%lf", &num);
+                exibir_bits_double(num);
+                break;
+            case 8:
                 printf("Saindo...\n");
                 break;
             default:
                 printf("Opção inválida!\n");
                 break;
         }
-    } while (opcao != 5);
+    } while (opcao != 8);
 
     return 0;
 }
